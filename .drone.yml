@@ -55,7 +55,7 @@ pipeline:
   slack:
     image: plugins/slack
     secrets: [ slack_webhook ]
-    channel: marketplace
+    channel: drone
     when:
       event: [ push, pull_request ]
       status: [ success, failure ]
