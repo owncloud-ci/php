@@ -23,7 +23,7 @@ pipeline:
     image: plugins/docker
     secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
-    storage_path: docker
+    storage_path: /drone/src/docker
     pull_image: true
     tags: [ '7.2' ]
     when:
