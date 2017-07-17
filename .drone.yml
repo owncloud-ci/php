@@ -30,6 +30,15 @@ pipeline:
       event: [ push ]
       branch: [ '7.0' ]
 
+  microbadger:
+    image: zyclonite/drone-webhook
+    secrets:
+      - source: microbadger_token
+        target: plugin_webhook
+    when:
+      event: [ push ]
+      branch: [ '7.0' ]
+
   rebuild:
     image: jmccann/drone-s3-cache
     secrets: [ cache_s3_server, cache_s3_access_key, cache_s3_secret_key ]
