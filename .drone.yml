@@ -12,7 +12,7 @@ pipeline:
   dryrun:
     image: plugins/docker
     repo: owncloudci/php
-    storage_path: docker
+    storage_path: /drone/src/docker
     pull_image: true
     dry_run: true
     tags: [ '7.2' ]
