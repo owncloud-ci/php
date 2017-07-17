@@ -5,6 +5,7 @@ workspace:
 pipeline:
   dryrun:
     image: plugins/docker
+    pull: true
     secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
     dry_run: true
@@ -14,6 +15,7 @@ pipeline:
 
   docker:
     image: plugins/docker
+    pull: true
     secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
     tags: [ '7.0' ]
@@ -22,6 +24,7 @@ pipeline:
 
   microbadger:
     image: zyclonite/drone-webhook
+    pull: true
     secrets:
       - source: microbadger_token
         target: plugin_webhook
@@ -30,6 +33,7 @@ pipeline:
 
   slack:
     image: plugins/slack
+    pull: true
     secrets: [ slack_webhook ]
     channel: drone
     when:
