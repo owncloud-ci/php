@@ -3,17 +3,10 @@ workspace:
   path: src
 
 pipeline:
-  restore:
-    image: jmccann/drone-s3-cache
-    secrets: [ cache_s3_server, cache_s3_access_key, cache_s3_secret_key ]
-    pull: true
-    restore: true
-
   dryrun:
     image: plugins/docker
+    secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
-    storage_path: /drone/src/docker
-    pull_image: true
     dry_run: true
     tags: [ 'latest' ]
     when:
@@ -23,11 +16,8 @@ pipeline:
     image: plugins/docker
     secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
-    storage_path: /drone/src/docker
-    pull_image: true
     tags: [ 'latest' ]
     when:
-      event: [ push ]
       branch: [ master ]
 
   microbadger:
@@ -36,26 +26,11 @@ pipeline:
       - source: microbadger_token
         target: plugin_webhook
     when:
-      event: [ push ]
       branch: [ master ]
-
-  rebuild:
-    image: jmccann/drone-s3-cache
-    secrets: [ cache_s3_server, cache_s3_access_key, cache_s3_secret_key ]
-    rebuild: true
-    mount:
-      - docker
-
-  flush:
-    image: jmccann/drone-s3-cache
-    secrets: [ cache_s3_server, cache_s3_access_key, cache_s3_secret_key ]
-    flush: true
-    flush_age: 14
 
   slack:
     image: plugins/slack
     secrets: [ slack_webhook ]
     channel: drone
     when:
-      event: [ push, pull_request ]
       status: [ success, failure ]
