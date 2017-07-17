@@ -8,6 +8,10 @@ pipeline:
     pull: true
     secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
+    build_args:
+      - VERSION=${DRONE_BRANCH}
+      - BUILD_DATE=${DRONE_BUILD_CREATED}
+      - VCS_REF=${DRONE_COMMIT_SHA}
     dry_run: true
     tags: [ 'latest' ]
     when:
@@ -18,6 +22,10 @@ pipeline:
     pull: true
     secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
+    build_args:
+      - VERSION=${DRONE_BRANCH}
+      - BUILD_DATE=${DRONE_BUILD_CREATED}
+      - VCS_REF=${DRONE_COMMIT_SHA}
     tags: [ 'latest' ]
     when:
       branch: [ master ]
