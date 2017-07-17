@@ -7,7 +7,7 @@ RUN apt-get update -y && \
 RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && \
   apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y git-core unzip npm wget php7.1 && \
+  apt-get install -y git-core unzip npm wget php7.1 php7.1-xml php7.1-mbstring php7.1-curl && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN curl -sS https://getcomposer.org/installer \
