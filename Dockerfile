@@ -7,7 +7,7 @@ RUN apt-get update -y && \
 RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && \
   apt-get update -y && \
   apt-get install -y git-core unzip npm nodejs-legacy wget fontconfig php7.0 php7.0-xml php7.0-mbstring php7.0-curl php7.0-gd php7.0-zip php7.0-intl php7.0-sqlite3 php7.0-mysql php7.0-pgsql php7.0-soap && \
-  apt-get install -y php-redis php-memcached && \
+  apt-get install -y php-redis php-memcached php-imagick && \
   apt-get upgrade -y && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
