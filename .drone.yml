@@ -26,6 +26,7 @@ pipeline:
       - version=${DRONE_BRANCH}
     tags: [ 'latest' ]
     when:
+      event: [ push ]
       branch: [ master ]
 
   microbadger:
@@ -35,6 +36,7 @@ pipeline:
       - source: microbadger_token
         target: plugin_webhook
     when:
+      event: [ push ]
       branch: [ master ]
 
   slack:
