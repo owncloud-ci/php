@@ -13,7 +13,7 @@ To get an overview about the available versions please take a look at the [GitHu
 
 ## Volumes
 
-* None
+* /var/www/owncloud
 
 
 ## Ports
@@ -46,7 +46,6 @@ Fork -> Patch -> Push -> Pull Request
 ## Authors
 
 * [Thomas Boerger](https://github.com/tboerger)
-* [Felix Boehm](https://github.com/felixboehm)
 
 
 ## License
