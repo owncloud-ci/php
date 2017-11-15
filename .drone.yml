@@ -9,7 +9,6 @@ pipeline:
     secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
     label_schema:
-      - name=PHP
       - version=${DRONE_BRANCH}
     dry_run: true
     tags: [ 'latest' ]
@@ -22,7 +21,6 @@ pipeline:
     secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
     label_schema:
-      - name=PHP
       - version=${DRONE_BRANCH}
     tags: [ 'latest' ]
     when:
