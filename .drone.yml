@@ -2,6 +2,9 @@ workspace:
   base: /drone
   path: src
 
+branches:
+  - master
+
 pipeline:
   dryrun:
     image: plugins/docker:17.05
@@ -25,7 +28,6 @@ pipeline:
     tags: [ 'latest' ]
     when:
       event: [ push ]
-      branch: [ master ]
 
   microbadger:
     image: plugins/webhook:1
@@ -35,7 +37,6 @@ pipeline:
         target: plugin_webhook
     when:
       event: [ push ]
-      branch: [ master ]
 
   slack:
     image: plugins/slack:1
