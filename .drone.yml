@@ -2,6 +2,9 @@ workspace:
   base: /drone
   path: src
 
+branches:
+  - 7.2
+
 pipeline:
   dryrun:
     image: plugins/docker:17.05
@@ -9,10 +12,9 @@ pipeline:
     secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
     label_schema:
-      - name=PHP
       - version=${DRONE_BRANCH}
     dry_run: true
-    tags: [ '7.2' ]
+    tags: [ '${DRONE_BRANCH}' ]
     when:
       event: [ pull_request ]
 
@@ -22,12 +24,10 @@ pipeline:
     secrets: [ docker_username, docker_password ]
     repo: owncloudci/php
     label_schema:
-      - name=PHP
       - version=${DRONE_BRANCH}
-    tags: [ '7.2' ]
+    tags: [ '${DRONE_BRANCH}' ]
     when:
       event: [ push ]
-      branch: [ '7.2' ]
 
   microbadger:
     image: plugins/webhook:1
@@ -37,7 +37,6 @@ pipeline:
         target: plugin_webhook
     when:
       event: [ push ]
-      branch: [ '7.2' ]
 
   slack:
     image: plugins/slack:1
