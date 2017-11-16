@@ -9,11 +9,13 @@ VOLUME ["/var/www/owncloud"]
 
 RUN apt-get update -y && \
   apt-get install -y software-properties-common language-pack-en-base && \
-  LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
+  LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && \
+  LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/apache2
 
 RUN apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y git-core unzip npm nodejs-legacy wget fontconfig php5.6 php5.6-xml php5.6-mbstring php5.6-curl php5.6-gd php5.6-zip php5.6-intl php5.6-sqlite3 php5.6-mysql php5.6-pgsql php5.6-soap php5.6-phpdbg php-redis php-memcached php-imagick && \
+  apt-mark hold php-apcu-bc && \
+  apt-get install -y git-core unzip npm nodejs-legacy wget fontconfig php5.6 php5.6-xml php5.6-mbstring php5.6-curl php5.6-gd php5.6-zip php5.6-intl php5.6-sqlite3 php5.6-mysql php5.6-pgsql php5.6-soap php5.6-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
