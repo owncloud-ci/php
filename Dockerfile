@@ -14,7 +14,7 @@ RUN apt-get update -y && \
 
 RUN apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y git-core unzip npm nodejs-legacy wget fontconfig php7.0 php7.0-xml php7.0-mbstring php7.0-curl php7.0-gd php7.0-zip php7.0-intl php7.0-sqlite3 php7.0-mysql php7.0-pgsql php7.0-soap php7.0-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu php-pear php-xml php7.0-dev && \
+  apt-get install -y git-core unzip npm nodejs-legacy wget fontconfig libaio1 php7.0 php7.0-xml php7.0-mbstring php7.0-curl php7.0-gd php7.0-zip php7.0-intl php7.0-sqlite3 php7.0-mysql php7.0-pgsql php7.0-soap php7.0-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu php7.0-dev && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -41,6 +41,8 @@ RUN mkdir /opt/oracle && \
   printf "instantclient,/opt/oracle/instantclient_12_1" | pecl install oci8 && \
   echo "extension=oci8.so" >> /etc/php/7.0/apache2/php.ini && \
   echo "extension=oci8.so" >> /etc/php/7.0/cli/php.ini
+
+ENV ORACLE_HOME=/opt/oracle/instantclient_12_1 LD_LIBRARY_PATH=/opt/oracle/instantclient_12_1
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
