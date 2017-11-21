@@ -19,7 +19,7 @@ RUN apt-get update -y && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #ORACLE INSTALLATION
-#get the zips
+#get the zips & unzip them & set paths & install oci8
 RUN mkdir /opt/oracle && \
   wget -O /opt/oracle/instantclient-basic-linux.x64-12.1.0.2.0.zip \
   https://github.com/DeepDiver1975/oracle_instant_client_for_ubuntu_64bit\
@@ -29,26 +29,18 @@ RUN mkdir /opt/oracle && \
 /raw/12.1.as.zip/zips/instantclient-sdk-linux.x64-12.1.0.2.0.zip && \
   wget -O /opt/oracle/instantclient-sqlplus-linux.x64-12.1.0.2.0.zip \
   https://github.com/DeepDiver1975/oracle_instant_client_for_ubuntu_64bit\
-/raw/12.1.as.zip/zips/instantclient-sqlplus-linux.x64-12.1.0.2.0.zip
-
-#unzip them
-RUN unzip /opt/oracle/instantclient-basic-linux.x64-12.1.0.2.0.zip -d /opt/oracle && \
+/raw/12.1.as.zip/zips/instantclient-sqlplus-linux.x64-12.1.0.2.0.zip && \
+  unzip /opt/oracle/instantclient-basic-linux.x64-12.1.0.2.0.zip -d /opt/oracle && \
   unzip /opt/oracle/instantclient-sdk-linux.x64-12.1.0.2.0.zip -d /opt/oracle && \
-  unzip /opt/oracle/instantclient-sqlplus-linux.x64-12.1.0.2.0.zip -d /opt/oracle
-
-#set paths properly
-RUN ln -s /opt/oracle/instantclient_12_1/libclntsh.so.12.1 /opt/oracle/instantclient_12_1/libclntsh.so && \
+  unzip /opt/oracle/instantclient-sqlplus-linux.x64-12.1.0.2.0.zip -d /opt/oracle && \
+  rm /opt/oracle/*.zip && \
+  ln -s /opt/oracle/instantclient_12_1/libclntsh.so.12.1 /opt/oracle/instantclient_12_1/libclntsh.so && \
   ln -s /opt/oracle/instantclient_12_1/libocci.so.12.1 /opt/oracle/instantclient_12_1/libocci.so && \
   echo /opt/oracle/instantclient_12_1 > /etc/ld.so.conf.d/oracle-instantclient && \
-  ldconfig
-
-#install oci8
-RUN printf "instantclient,/opt/oracle/instantclient_12_1" | pecl install oci8
-
-#add extension to php.ini
-RUN echo "extension=oci8.so" >> /etc/php/7.0/apache2/php.ini && \
+  ldconfig && \
+  printf "instantclient,/opt/oracle/instantclient_12_1" | pecl install oci8 && \
+  echo "extension=oci8.so" >> /etc/php/7.0/apache2/php.ini && \
   echo "extension=oci8.so" >> /etc/php/7.0/cli/php.ini
-
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
