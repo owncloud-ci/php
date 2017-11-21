@@ -43,6 +43,7 @@ RUN mkdir /opt/oracle && \
   echo "extension=oci8.so" >> /etc/php/7.0/cli/php.ini
 
 ENV ORACLE_HOME=/opt/oracle/instantclient_12_1 LD_LIBRARY_PATH=/opt/oracle/instantclient_12_1
+ENV PATH ${ORACLE_HOME}:${PATH}
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
