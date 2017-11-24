@@ -14,9 +14,34 @@ RUN apt-get update -y && \
 
 RUN apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y git-core unzip npm nodejs-legacy wget fontconfig php7.0 php7.0-xml php7.0-mbstring php7.0-curl php7.0-gd php7.0-zip php7.0-intl php7.0-sqlite3 php7.0-mysql php7.0-pgsql php7.0-soap php7.0-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu && \
+  apt-get install -y git-core unzip npm nodejs-legacy wget fontconfig libaio1 php7.0 php7.0-dev php7.0-xml php7.0-mbstring php7.0-curl php7.0-gd php7.0-zip php7.0-intl php7.0-sqlite3 php7.0-mysql php7.0-pgsql php7.0-soap php7.0-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN mkdir /opt/oracle
+
+ADD oracle_instant_client_for_ubuntu_64bit/instantclient-basic-linux.x64-12.1.0.2.0.zip \
+    /opt/oracle/instantclient-basic-linux.x64-12.1.0.2.0.zip
+ADD oracle_instant_client_for_ubuntu_64bit/instantclient-sdk-linux.x64-12.1.0.2.0.zip \
+    /opt/oracle/instantclient-sdk-linux.x64-12.1.0.2.0.zip
+ADD oracle_instant_client_for_ubuntu_64bit/instantclient-sqlplus-linux.x64-12.1.0.2.0.zip \
+    /opt/oracle/instantclient-sqlplus-linux.x64-12.1.0.2.0.zip
+
+RUN unzip /opt/oracle/instantclient-basic-linux.x64-12.1.0.2.0.zip -d /opt/oracle && \
+  unzip /opt/oracle/instantclient-sdk-linux.x64-12.1.0.2.0.zip -d /opt/oracle && \
+  unzip /opt/oracle/instantclient-sqlplus-linux.x64-12.1.0.2.0.zip -d /opt/oracle && \
+  rm /opt/oracle/*.zip && \
+  ln -s /opt/oracle/instantclient_12_1/libclntsh.so.12.1 /opt/oracle/instantclient_12_1/libclntsh.so && \
+  ln -s /opt/oracle/instantclient_12_1/libocci.so.12.1 /opt/oracle/instantclient_12_1/libocci.so && \
+  echo /opt/oracle/instantclient_12_1 > /etc/ld.so.conf.d/oracle-instantclient && \
+  ldconfig && \
+  printf "instantclient,/opt/oracle/instantclient_12_1" | pecl install oci8 && \
+  echo "extension=oci8.so" >> /etc/php/7.0/apache2/php.ini && \
+  echo "extension=oci8.so" >> /etc/php/7.0/cli/php.ini
+
+ENV ORACLE_HOME /opt/oracle/instantclient_12_1
+ENV LD_LIBRARY_PATH /opt/oracle/instantclient_12_1
+ENV PATH ${ORACLE_HOME}:${PATH}
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
