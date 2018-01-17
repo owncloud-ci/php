@@ -18,7 +18,7 @@ RUN apt-get update -y && \
 RUN apt-get update -y && \
   apt-get upgrade -y && \
   apt-mark hold php-apcu-bc && \
-  apt-get install -y git-core unzip npm nodejs-legacy wget fontconfig libaio1 php5.6 php5.6-dev php5.6-xml php5.6-mbstring php5.6-curl php5.6-gd php5.6-zip php5.6-intl php5.6-sqlite3 php5.6-mysql php5.6-pgsql php5.6-soap php5.6-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu && \
+  apt-get install -y libxml2-utils git-core unzip npm nodejs-legacy wget fontconfig libaio1 php5.6 php5.6-dev php5.6-xml php5.6-mbstring php5.6-curl php5.6-gd php5.6-zip php5.6-intl php5.6-sqlite3 php5.6-mysql php5.6-pgsql php5.6-soap php5.6-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
