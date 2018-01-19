@@ -17,7 +17,7 @@ RUN apt-get update -y && \
 
 RUN apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y libxml2-utils git-core unzip npm nodejs-legacy wget fontconfig libaio1 php7.2 php7.2-dev php7.2-xml php7.2-mbstring php7.2-curl php7.2-gd php7.2-zip php7.2-intl php7.2-sqlite3 php7.2-mysql php7.2-pgsql php7.2-soap php7.2-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu && \
+  apt-get install -y apache2 libapache2-mod-php7.2 libxml2-utils git-core unzip npm nodejs-legacy wget fontconfig libaio1 php7.2 php7.2-dev php7.2-xml php7.2-mbstring php7.2-curl php7.2-gd php7.2-zip php7.2-intl php7.2-sqlite3 php7.2-mysql php7.2-pgsql php7.2-soap php7.2-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
