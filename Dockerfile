@@ -19,6 +19,8 @@ RUN apt-get update -y && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
+RUN npm install -g yarn
+
 RUN curl -sSo oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb && \
   dpkg -i oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb && \
   rm oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb
