@@ -10,14 +10,18 @@ VOLUME ["/var/www/owncloud"]
 ENV ORACLE_HOME=/usr/lib/oracle/12.2/client64
 ENV LD_LIBRARY_PATH=/usr/lib/oracle/12.2/client64/lib/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
-RUN apt-get update -y && \
+RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
+  echo "deb https://deb.nodesource.com/node_6.x xenial main" | tee /etc/apt/sources.list.d/node.list && \
+  curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+  echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+  apt-get update -y && \
   apt-get install -y software-properties-common language-pack-en-base && \
   LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && \
   LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/apache2
 
 RUN apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y apache2 libapache2-mod-php7.2 libxml2-utils git-core unzip npm nodejs-legacy wget fontconfig libaio1 php7.2 php7.2-dev php7.2-xml php7.2-mbstring php7.2-curl php7.2-gd php7.2-zip php7.2-intl php7.2-sqlite3 php7.2-mysql php7.2-pgsql php7.2-soap php7.2-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu && \
+  apt-get install -y apache2 libapache2-mod-php7.2 libxml2-utils git-core unzip nodejs yarn wget fontconfig libaio1 php7.2 php7.2-dev php7.2-xml php7.2-mbstring php7.2-curl php7.2-gd php7.2-zip php7.2-intl php7.2-sqlite3 php7.2-mysql php7.2-pgsql php7.2-soap php7.2-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/apache2/sites-available/default-ssl.conf && \
   a2enmod rewrite headers env dir mime ssl expires dav dav_fs
