@@ -12,7 +12,7 @@ ENV LD_LIBRARY_PATH=/usr/lib/oracle/12.2/client64/lib/${LD_LIBRARY_PATH:+:$LD_LI
 
 RUN apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y apache2 libapache2-mod-php libxml2-utils mysql-client postgresql-client sqlite git-core unzip npm nodejs-legacy wget fontconfig libaio1 php php-dev php-xml php-mbstring php-curl php-gd php-zip php-intl php-sqlite3 php-mysql php-pgsql php-soap php-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu && \
+  apt-get install -y apache2 libapache2-mod-php libxml2-utils mysql-client postgresql-client sqlite git-core unzip npm nodejs-legacy wget fontconfig libaio1 php php-dev php-xml php-mbstring php-curl php-gd php-zip php-intl php-sqlite3 php-mysql php-pgsql php-soap php-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu php-ldap && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/apache2/sites-available/default-ssl.conf && \
   a2enmod rewrite headers env dir mime ssl expires dav dav_fs
