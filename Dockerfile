@@ -45,3 +45,4 @@ RUN ln -s /usr/include/oracle/12.2/client64 /usr/lib/oracle/12.2/client64/includ
 
 COPY rootfs /
 WORKDIR /var/www/owncloud
+ENTRYPOINT ["/usr/local/bin/entrypoint"]
