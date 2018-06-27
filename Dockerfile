@@ -21,9 +21,10 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 
 RUN apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y apache2 libapache2-mod-php7.1 libxml2-utils git-core unzip nodejs yarn wget fontconfig libaio1 php7.1 php7.1-dev php7.1-xml php7.1-mbstring php7.1-curl php7.1-gd php7.1-zip php7.1-intl php7.1-sqlite3 php7.1-mysql php7.1-pgsql php7.1-soap php7.1-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu php7.1-ldap php-ast&& \
+  apt-get install -y apache2 libapache2-mod-php7.1 libxml2-utils git-core unzip nodejs yarn wget fontconfig libaio1 php7.1 php7.1-dev php7.1-xml php7.1-mbstring php7.1-curl php7.1-gd php7.1-zip php7.1-intl php7.1-sqlite3 php7.1-mysql php7.1-pgsql php7.1-soap php7.1-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu php7.1-ldap php-ast php-xdebug && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/apache2/sites-available/default-ssl.conf && \
+  phpdismod xdebug && \
   a2enmod rewrite headers env dir mime ssl expires dav dav_fs
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
