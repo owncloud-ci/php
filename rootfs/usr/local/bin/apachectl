@@ -10,6 +10,12 @@ declare -x APACHE_CONFIG_TEMPLATE
 declare -x APACHE_WEBROOT
 [[ -z "${APACHE_WEBROOT}" ]] && APACHE_WEBROOT="/var/www/owncloud"
 
+declare -x APACHE_SSL_CERT
+[[ -z "${APACHE_SSL_CERT}" ]] && APACHE_SSL_CERT="/etc/apache2/ssl/server.crt"
+
+declare -x APACHE_SSL_KEY
+[[ -z "${APACHE_SSL_KEY}" ]] && APACHE_SSL_KEY="/etc/apache2/ssl/server.key"
+
 declare -x APACHE_WEBDAV_AUTHFILE
 [[ -z "${APACHE_WEBDAV_AUTHFILE}" ]] && APACHE_WEBDAV_AUTHFILE="/etc/apache2/webdav.auth"
 
