@@ -10,6 +10,15 @@ declare -x APACHE_CONFIG_TEMPLATE
 declare -x APACHE_WEBROOT
 [[ -z "${APACHE_WEBROOT}" ]] && APACHE_WEBROOT="/var/www/owncloud"
 
+declare -x APACHE_SSL_CERT_CN
+[[ -z "${APACHE_SSL_CERT_CN}" ]] && APACHE_SSL_CERT_CN="server"
+
+declare -x APACHE_SSL_CERT
+[[ -z "${APACHE_SSL_CERT}" ]] && APACHE_SSL_CERT="/etc/apache2/ssl/${APACHE_SSL_CERT_CN}.crt"
+
+declare -x APACHE_SSL_KEY
+[[ -z "${APACHE_SSL_KEY}" ]] && APACHE_SSL_KEY="/etc/apache2/ssl/${APACHE_SSL_CERT_CN}.key"
+
 declare -x APACHE_WEBDAV_AUTHFILE
 [[ -z "${APACHE_WEBDAV_AUTHFILE}" ]] && APACHE_WEBDAV_AUTHFILE="/etc/apache2/webdav.auth"
 
@@ -31,6 +40,13 @@ if [[ ${APACHE_CONFIG_TEMPLATE} == "webdav" ]]; then
 
     echo "Fixing directory access"
     chown www-data:www-data "${APACHE_WEBROOT}"
+fi
+
+if [[ ! -f ${APACHE_SSL_KEY} || ! -f ${APACHE_SSL_CERT} ]]
+then
+    echo "Generating SSL certificates for ${APACHE_SSL_CERT_CN} ..."
+    SSL_SUBJ="/C=DE/ST=Bavaria/L=Nuremberg/O=ownCloud GmbH/CN=${APACHE_SSL_CERT_CN}"
+    openssl req -x509 -subj "${SSL_SUBJ}" -sha256 -nodes -days 1825 -newkey rsa:4096 -keyout ${APACHE_SSL_KEY} -out ${APACHE_SSL_CERT}
 fi
 
 echo "Writing apache config..."
