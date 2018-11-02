@@ -28,5 +28,20 @@ RUN apt-get update -y && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
+RUN curl -sSo oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb && \
+  dpkg -i oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb && \
+  rm oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb
+
+RUN curl -sSo oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb && \
+  dpkg -i oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb && \
+  rm oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb
+
+RUN curl -sSo oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb && \
+  dpkg -i oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb && \
+  rm oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb
+
+RUN ln -s /usr/include/oracle/12.2/client64 /usr/lib/oracle/12.2/client64/include && \
+  echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-2.1.8
+
 COPY rootfs /
 WORKDIR /var/www/owncloud
