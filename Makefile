@@ -1,4 +1,4 @@
-IMAGE_NAME ?= owncloudci/php:latest
+IMAGE_NAME ?= owncloudci/php:7.3
 
 BUILD_VERSION ?= latest
 BUILD_DATE ?= $(shell date -u '+%Y-%m-%dT%H:%M:%SZ')
