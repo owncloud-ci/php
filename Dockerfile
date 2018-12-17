@@ -41,7 +41,7 @@ RUN curl -sSo oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb https://mini
   rm oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb
 
 RUN ln -s /usr/include/oracle/12.2/client64 /usr/lib/oracle/12.2/client64/include && \
-  echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-2.1.8
+  echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-2.2.0
 
 COPY rootfs /
 WORKDIR /var/www/owncloud
