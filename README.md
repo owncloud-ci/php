@@ -1,57 +1,52 @@
 # PHP
 
-[![Build Status](https://drone.owncloud.com/api/badges/owncloud-ci/php/status.svg)](https://drone.owncloud.com/owncloud-ci/php)
+[![Build Status](https://cloud.drone.io/api/badges/owncloud-ci/php/status.svg)](https://cloud.drone.io/owncloud-ci/php)
 [![](https://images.microbadger.com/badges/image/owncloudci/php.svg)](https://microbadger.com/images/owncloudci/php "Get your own image badge on microbadger.com")
 
 TBD
 
-
 ## Versions
 
-To get an overview about the available versions please take a look at the [GitHub branches](https://github.com/owncloud-ci/php/branches/all) or our [Docker Hub tags](https://hub.docker.com/r/owncloudci/php/tags/), these lists are always up to date.
-
+* [latest](./latest) available as `owncloud/php:latest`
+* [5.6](./v5.6) available as `owncloud/php:5.6`
+* [7.0](./v7.0) available as `owncloud/php:7.0`
+* [7.1](./v7.1) available as `owncloud/php:7.1`
+* [7.2](./v7.2) available as `owncloud/php:7.2`
+* [7.3](./v7.3) available as `owncloud/php:7.3`
 
 ## Volumes
 
 * /var/www/owncloud
 
-
 ## Ports
 
 * None
 
-
 ## Available environment variables
-
-```bash
 
 ```
 
+```
 
 ## Inherited environment variables
 
-* [owncloud/ubuntu](https://github.com/owncloud/ubuntu#available-environment-variables)
-
+* [owncloud/ubuntu](https://github.com/owncloud-docker/ubuntu#available-environment-variables)
 
 ## Issues, Feedback and Ideas
 
 Open an [Issue](https://github.com/owncloud-ci/php/issues)
 
-
 ## Contributing
 
 Fork -> Patch -> Push -> Pull Request
-
 
 ## Authors
 
 * [Thomas Boerger](https://github.com/tboerger)
 
-
 ## License
 
 MIT
-
 
 ## Copyright
 
