@@ -25,5 +25,5 @@ RUN apt-get update -y && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-COPY ./overlay ./overlay-amd64 /
+COPY ./overlay ./overlay-arm32v7 /
 WORKDIR /var/www/owncloud
