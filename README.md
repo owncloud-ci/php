@@ -13,6 +13,7 @@ TBD
 * [7.1](./v7.1) available as `owncloudci/php:7.1`
 * [7.2](./v7.2) available as `owncloudci/php:7.2`
 * [7.3](./v7.3) available as `owncloudci/php:7.3`
+* [7.4](./v7.4) available as `owncloudci/php:7.4`
 
 ## Volumes
 
