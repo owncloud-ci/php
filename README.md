@@ -3,7 +3,8 @@
 [![Build Status](https://cloud.drone.io/api/badges/owncloud-ci/php/status.svg)](https://cloud.drone.io/owncloud-ci/php)
 [![](https://images.microbadger.com/badges/image/owncloudci/php.svg)](https://microbadger.com/images/owncloudci/php "Get your own image badge on microbadger.com")
 
-TBD
+This repo provides docker images with the PHP versions listed below.
+The patch versions of each minor release are up-to-date with official PHP releases as at 19 Dec 2019.
 
 ## Versions
 
