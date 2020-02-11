@@ -18,6 +18,8 @@ def main(ctx):
   config = {
     'version': None,
     'arch': None,
+    'trigger': [],
+    'repo': ctx.repo.name
   }
 
   stages = []
@@ -61,8 +63,7 @@ def main(ctx):
     stages.extend(inner)
 
   after = [
-    microbadger(config),
-    rocketchat(config),
+    notification(config),
   ]
 
   for s in stages:
@@ -107,7 +108,6 @@ def manifest(config):
       {
         'name': 'manifest',
         'image': 'plugins/manifest',
-        'pull': 'always',
         'settings': {
           'username': {
             'from_secret': 'public_username',
@@ -145,7 +145,6 @@ def microbadger(config):
       {
         'name': 'notify',
         'image': 'plugins/webhook',
-        'pull': 'always',
         'failure': 'ignore',
         'settings': {
           'urls': {
@@ -163,11 +162,48 @@ def microbadger(config):
     },
   }
 
-def rocketchat(config):
+def notification(config):
+  steps = [{
+    'name': 'notify',
+    'image': 'plugins/slack',
+    'settings': {
+      'webhook': {
+        'from_secret': 'private_rocketchat',
+      },
+      'channel': 'builds',
+    },
+    'when': {
+      'status': [
+        'success',
+        'failure',
+      ],
+    },
+  }]
+
+  downstream = [{
+    'name': 'downstream',
+    'image': 'plugins/downstream',
+    'settings': {
+      'token': {
+        'from_secret': 'drone_token',
+      },
+      'server': 'https://drone.owncloud.com',
+      'repositories': config['trigger'],
+    },
+    'when': {
+      'status': [
+        'success',
+      ],
+    },
+  }]
+
+  if config['trigger']:
+    steps = downstream + steps
+
   return {
     'kind': 'pipeline',
     'type': 'docker',
-    'name': 'rocketchat',
+    'name': 'notification',
     'platform': {
       'os': 'linux',
       'arch': 'amd64',
@@ -175,20 +211,7 @@ def rocketchat(config):
     'clone': {
       'disable': True,
     },
-    'steps': [
-      {
-        'name': 'notify',
-        'image': 'plugins/slack',
-        'pull': 'always',
-        'failure': 'ignore',
-        'settings': {
-          'webhook': {
-            'from_secret': 'public_rocketchat',
-          },
-          'channel': 'docker',
-        },
-      },
-    ],
+    'steps': steps,
     'depends_on': [],
     'trigger': {
       'ref': [
@@ -196,7 +219,7 @@ def rocketchat(config):
         'refs/tags/**',
       ],
       'status': [
-        'changed',
+        'success',
         'failure',
       ],
     },
@@ -206,7 +229,6 @@ def prepublish(config):
   return [{
     'name': 'prepublish',
     'image': 'plugins/docker',
-    'pull': 'always',
     'settings': {
       'username': {
         'from_secret': 'internal_username',
@@ -216,7 +238,7 @@ def prepublish(config):
       },
       'tags': config['internal'],
       'dockerfile': '%s/Dockerfile.%s' % (config['path'], config['arch']),
-      'repo': 'registry.drone.owncloud.com/owncloudci/php',
+      'repo': 'registry.drone.owncloud.com/owncloudci/%s' % config['repo'],
       'registry': 'registry.drone.owncloud.com',
       'context': config['path'],
       'purge': False,
@@ -233,7 +255,6 @@ def sleep(config):
   return [{
     'name': 'sleep',
     'image': 'toolhippie/reg:latest',
-    'pull': 'always',
     'environment': {
       'DOCKER_USER': {
         'from_secret': 'internal_username',
@@ -243,61 +264,16 @@ def sleep(config):
       },
     },
     'commands': [
-      'retry -- reg digest --username $DOCKER_USER --password $DOCKER_PASSWORD registry.drone.owncloud.com/owncloudci/php:%s' % config['internal'],
+      'retry -- reg digest --username $DOCKER_USER --password $DOCKER_PASSWORD registry.drone.owncloud.com/owncloudci/%s:%s' % (config['repo'], config['internal']),
     ],
   }]
 
-def trivy(config):
-  if config['arch'] != 'amd64':
-    return []
 
-  return [
-    {
-      'name': 'database',
-      'image': 'plugins/download',
-      'pull': 'always',
-      'settings': {
-        'source': 'https://download.owncloud.com/internal/trivy.db',
-        'destination': 'trivy/db/trivy.db',
-        'username': {
-          'from_secret': 'download_username',
-        },
-        'password': {
-          'from_secret': 'download_password',
-        },
-      },
-    },
-    {
-      'name': 'trivy',
-      'image': 'toolhippie/trivy:latest',
-      'pull': 'always',
-      'environment': {
-        'TRIVY_AUTH_URL': 'https://registry.drone.owncloud.com',
-        'TRIVY_USERNAME': {
-          'from_secret': 'internal_username',
-        },
-        'TRIVY_PASSWORD': {
-          'from_secret': 'internal_password',
-        },
-        'TRIVY_SKIP_UPDATE': True,
-        'TRIVY_NO_PROGRESS': True,
-        'TRIVY_IGNORE_UNFIXED': True,
-        'TRIVY_TIMEOUT': '5m',
-        'TRIVY_EXIT_CODE': '1',
-        'TRIVY_SEVERITY': 'HIGH,CRITICAL',
-        'TRIVY_CACHE_DIR': '/drone/src/trivy'
-      },
-      'commands': [
-        'retry -- trivy registry.drone.owncloud.com/owncloudci/php:%s' % config['internal'],
-      ],
-    },
-  ]
 
 def server(config):
   return [{
     'name': 'server',
-    'image': 'registry.drone.owncloud.com/owncloudci/php:%s' % config['internal'],
-    'pull': 'always',
+    'image': 'registry.drone.owncloud.com/owncloudci/%s:%s' % (config['repo'], config['internal']),
     'detach': True,
     'commands': [
       'apachectl -DFOREGROUND',
@@ -308,7 +284,6 @@ def wait(config):
   return [{
     'name': 'wait',
     'image': 'owncloud/ubuntu:latest',
-    'pull': 'always',
     'commands': [
       'wait-for-it -t 600 server:80',
     ],
@@ -318,7 +293,6 @@ def tests(config):
   return [{
     'name': 'test',
     'image': 'owncloud/ubuntu:latest',
-    'pull': 'always',
     'commands': [
       'curl -sSf http://server:80/',
     ],
@@ -328,7 +302,6 @@ def publish(config):
   return [{
     'name': 'publish',
     'image': 'plugins/docker',
-    'pull': 'always',
     'settings': {
       'username': {
         'from_secret': 'public_username',
@@ -338,7 +311,7 @@ def publish(config):
       },
       'tags': config['tag'],
       'dockerfile': '%s/Dockerfile.%s' % (config['path'], config['arch']),
-      'repo': 'owncloudci/php',
+      'repo': 'owncloudci/%s' % config['repo'],
       'context': config['path'],
       'pull_image': False,
     },
@@ -351,6 +324,7 @@ def publish(config):
     'when': {
       'ref': [
         'refs/heads/master',
+        'refs/tags/**',
       ],
     },
   }]
@@ -359,7 +333,6 @@ def cleanup(config):
   return [{
     'name': 'cleanup',
     'image': 'toolhippie/reg:latest',
-    'pull': 'always',
     'failure': 'ignore',
     'environment': {
       'DOCKER_USER': {
@@ -370,7 +343,7 @@ def cleanup(config):
       },
     },
     'commands': [
-      'reg rm --username $DOCKER_USER --password $DOCKER_PASSWORD registry.drone.owncloud.com/owncloudci/php:%s' % config['internal'],
+      'reg rm --username $DOCKER_USER --password $DOCKER_PASSWORD registry.drone.owncloud.com/owncloudci/%s:%s' % (config['repo'], config['internal']),
     ],
     'when': {
       'status': [
@@ -389,4 +362,4 @@ def volumes(config):
   ]
 
 def steps(config):
-  return prepublish(config) + sleep(config) + trivy(config) + server(config) + wait(config) + tests(config) + publish(config) + cleanup(config)
+  return prepublish(config) + sleep(config) + server(config) + wait(config) + tests(config) + publish(config)
