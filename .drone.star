@@ -362,4 +362,4 @@ def volumes(config):
   ]
 
 def steps(config):
-  return prepublish(config) + server(config) + wait(config) + tests(config) + publish(config)
+  return prepublish(config) + sleep(config) + server(config) + wait(config) + tests(config) + publish(config)
