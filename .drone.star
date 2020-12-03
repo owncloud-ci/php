@@ -265,8 +265,6 @@ def sleep(config):
     ],
   }]
 
-
-
 def server(config):
   return [{
     'name': 'server',
