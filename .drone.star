@@ -301,6 +301,7 @@ def publish(config):
       'dockerfile': '%s/Dockerfile.%s' % (config['path'], config['arch']),
       'repo': 'owncloudci/%s' % config['repo'],
       'context': config['path'],
+      'cache_from': 'registry.drone.owncloud.com/owncloudci/%s:%s' % (config['repo'], config['internal']),
       'pull_image': False,
     },
     'when': {
