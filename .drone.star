@@ -79,7 +79,6 @@ def docker(config):
       'arch': config['platform'],
     },
     'steps': steps(config),
-    'volumes': volumes(config),
     'image_pull_secrets': [
       'registries',
     ],
@@ -239,13 +238,7 @@ def prepublish(config):
       'registry': 'registry.drone.owncloud.com',
       'context': config['path'],
       'purge': False,
-    },
-    'volumes': [
-      {
-        'name': 'docker',
-        'path': '/var/lib/docker',
-      },
-    ],
+    }
   }]
 
 def sleep(config):
@@ -310,12 +303,6 @@ def publish(config):
       'context': config['path'],
       'pull_image': False,
     },
-    'volumes': [
-      {
-        'name': 'docker',
-        'path': '/var/lib/docker',
-      },
-    ],
     'when': {
       'ref': [
         'refs/heads/master',
@@ -347,14 +334,6 @@ def cleanup(config):
       ],
     },
   }]
-
-def volumes(config):
-  return [
-    {
-      'name': 'docker',
-      'temp': {},
-    },
-  ]
 
 def steps(config):
   return prepublish(config) + sleep(config) + server(config) + wait(config) + tests(config) + publish(config)
