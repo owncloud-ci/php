@@ -238,7 +238,13 @@ def prepublish(config):
       'registry': 'registry.drone.owncloud.com',
       'context': config['path'],
       'purge': False,
-    }
+    },
+    'volumes': [
+      {
+        'name': 'docker',
+        'path': '/var/lib/docker/overlay2',
+      },
+    ],
   }]
 
 def sleep(config):
@@ -303,6 +309,12 @@ def publish(config):
       'context': config['path'],
       'pull_image': False,
     },
+    'volumes': [
+      {
+        'name': 'docker',
+        'path': '/var/lib/docker/overlay2',
+      },
+    ],
     'when': {
       'ref': [
         'refs/heads/master',
