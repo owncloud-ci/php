@@ -1,6 +1,6 @@
 # php
 
-[![Build Status](https://cloud.drone.io/api/badges/owncloud-ci/php/status.svg)](https://cloud.drone.io/owncloud-ci/php)
+[![Build Status](https://drone.owncloud.com/api/badges/owncloud-ci/php/status.svg)](https://drone.owncloud.com/owncloud-ci/php)
 
 ownCloud PHP image for CI pipelines.
 
