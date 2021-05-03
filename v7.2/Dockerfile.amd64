@@ -21,7 +21,7 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 
 RUN apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y apache2 libapache2-mod-php7.2 libxml2-utils git-core unzip nodejs yarn wget fontconfig libaio1 php7.2 php7.2-dev php7.2-xml php7.2-mbstring php7.2-curl php7.2-gd php7.2-zip php7.2-intl php7.2-sqlite3 php7.2-mysql php7.2-pgsql php7.2-soap php7.2-phpdbg php7.2-ldap php7.2-gmp php7.2-imap php7.2-redis php7.2-memcached php7.2-imagick php7.2-smbclient php7.2-apcu php7.2-ast rsync && \
+  apt-get install -y apache2 libapache2-mod-php7.2 libxml2-utils git-core unzip nodejs yarn wget fontconfig libaio1 php7.2 php7.2-dev php7.2-xml php7.2-mbstring php7.2-curl php7.2-gd php7.2-zip php7.2-intl php7.2-sqlite3 php7.2-mysql php7.2-pgsql php7.2-soap php7.2-phpdbg php7.2-ldap php7.2-gmp php7.2-imap php7.2-redis php7.2-memcached php7.2-imagick php7.2-smbclient php7.2-apcu php7.2-apcu-bc php7.2-ast rsync && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/apache2/sites-available/default-ssl.conf && \
   a2enmod rewrite headers env dir mime ssl expires dav dav_fs
