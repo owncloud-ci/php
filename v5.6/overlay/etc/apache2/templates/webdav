@@ -2,7 +2,7 @@
 	DavLockDB "/tmp/lockdb"
 
 	ErrorLog /dev/stdout
-	CustomLog /dev/stdout combined
+	CustomLog ${APACHE_LOGGING_PATH} combined
 
 	ServerAdmin webmaster@localhost
 	DocumentRoot ${APACHE_WEBROOT}

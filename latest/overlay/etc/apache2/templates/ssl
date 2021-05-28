@@ -4,7 +4,7 @@
 		DocumentRoot ${APACHE_WEBROOT} 
 
 		ErrorLog /dev/stdout
-		CustomLog /dev/stdout combined
+		CustomLog ${APACHE_LOGGING_PATH} combined
 
 		<Directory ${APACHE_WEBROOT}>
 			Options Indexes FollowSymLinks MultiViews
