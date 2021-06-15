@@ -126,39 +126,6 @@ def manifest(config):
     },
   }
 
-def microbadger(config):
-  return {
-    'kind': 'pipeline',
-    'type': 'docker',
-    'name': 'microbadger',
-    'platform': {
-      'os': 'linux',
-      'arch': 'amd64',
-    },
-    'clone': {
-      'disable': True,
-    },
-    'steps': [
-      {
-        'name': 'notify',
-        'image': 'plugins/webhook',
-        'failure': 'ignore',
-        'settings': {
-          'urls': {
-            'from_secret': 'microbadger_url',
-          },
-        },
-      },
-    ],
-    'depends_on': [],
-    'trigger': {
-      'ref': [
-        'refs/heads/master',
-        'refs/tags/**',
-      ],
-    },
-  }
-
 def notification(config):
   steps = [{
     'name': 'notify',
@@ -245,7 +212,7 @@ def prepublish(config):
 def sleep(config):
   return [{
     'name': 'sleep',
-    'image': 'toolhippie/reg:latest',
+    'image': 'owncloudci/alpine:latest',
     'environment': {
       'DOCKER_USER': {
         'from_secret': 'internal_username',
@@ -316,7 +283,7 @@ def publish(config):
 def cleanup(config):
   return [{
     'name': 'cleanup',
-    'image': 'toolhippie/reg:latest',
+    'image': 'owncloudci/alpine:latest',
     'failure': 'ignore',
     'environment': {
       'DOCKER_USER': {
