@@ -222,7 +222,7 @@ def sleep(config):
       },
     },
     'commands': [
-      'retry -- reg digest --username $DOCKER_USER --password $DOCKER_PASSWORD registry.drone.owncloud.com/owncloudci/%s:%s' % (config['repo'], config['internal']),
+      "retry -- 'reg digest --username $DOCKER_USER --password $DOCKER_PASSWORD registry.drone.owncloud.com/owncloudci/%s:%s'" % (config['repo'], config['internal']),
     ],
   }]
 
