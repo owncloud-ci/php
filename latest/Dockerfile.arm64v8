@@ -8,14 +8,9 @@ LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
 VOLUME ["/var/www/owncloud"]
 ENV APACHE_LOGGING_PATH=/dev/stdout
 
-RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
-  echo "deb https://deb.nodesource.com/node_8.x bionic main" | tee /etc/apt/sources.list.d/node.list && \
-  curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-  echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
 RUN apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y apache2 libapache2-mod-php libxml2-utils mysql-client postgresql-client sqlite git-core unzip nodejs yarn wget fontconfig libaio1 php php-dev php-xml php-mbstring php-curl php-gd php-zip php-intl php-sqlite3 php-mysql php-pgsql php-soap php-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu php-ldap php-gmp php-imap php-ast && \
+  apt-get install -y apache2 libapache2-mod-php libxml2-utils mysql-client postgresql-client sqlite git-core unzip wget fontconfig libaio1 php php-dev php-xml php-mbstring php-curl php-gd php-zip php-intl php-sqlite3 php-mysql php-pgsql php-soap php-phpdbg php-redis php-memcached php-imagick php-smbclient php-apcu php-ldap php-gmp php-imap php-ast && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/apache2/sites-available/default-ssl.conf && \
   a2enmod rewrite headers env dir mime ssl expires dav dav_fs
