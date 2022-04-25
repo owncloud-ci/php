@@ -192,7 +192,7 @@ def notification(config):
 def prepublish(config):
   return [{
     'name': 'prepublish',
-    'image': 'plugins/docker',
+    'image': 'plugins/docker:20.10.9',
     'settings': {
       'username': {
         'from_secret': 'internal_username',
@@ -257,7 +257,7 @@ def tests(config):
 def publish(config):
   return [{
     'name': 'publish',
-    'image': 'plugins/docker',
+    'image': 'plugins/docker:20.10.9',
     'settings': {
       'username': {
         'from_secret': 'public_username',
