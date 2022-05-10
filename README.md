@@ -8,6 +8,8 @@
 
 ownCloud PHP image for CI pipelines.
 
+Trigger CI
+
 ## Versions
 
 - [latest](./latest) available as `owncloudci/php:latest`
