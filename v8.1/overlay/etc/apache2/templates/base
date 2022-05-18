@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+	DocumentRoot ${APACHE_WEBROOT}
+
+	ErrorLog /dev/stdout
+	CustomLog ${APACHE_LOGGING_PATH} combined
+
+	<Directory ${APACHE_WEBROOT}>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride All
+		Require all granted
+	</Directory>
+</VirtualHost>

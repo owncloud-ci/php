@@ -1,0 +1,25 @@
+<VirtualHost *:80>
+	DavLockDB "/tmp/lockdb"
+
+	ErrorLog /dev/stdout
+	CustomLog ${APACHE_LOGGING_PATH} combined
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot ${APACHE_WEBROOT}
+	Alias /webdav ${APACHE_WEBROOT}
+
+	<Location /webdav/>
+		DAV on
+		Options +Indexes
+		AuthType Basic
+		AuthName "webdav"
+		AuthUserFile ${APACHE_WEBDAV_AUTHFILE}
+		Require valid-user
+	</Location>
+
+	<Directory ${APACHE_WEBROOT} >
+		Options Indexes FollowSymLinks
+		AllowOverride None
+		Require all granted
+	</Directory>
+</VirtualHost>
