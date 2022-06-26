@@ -18,6 +18,7 @@ ownCloud PHP image for CI pipelines.
 - [7.3](./v7.3) available as `owncloudci/php:7.3`
 - [7.4](./v7.4) available as `owncloudci/php:7.4`
 - [8.0](./v8.0) available as `owncloudci/php:8.0`
+- [8.1](./v8.1) available as `owncloudci/php:8.1`
 
 ## Volumes
 
