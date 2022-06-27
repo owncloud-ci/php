@@ -35,11 +35,6 @@ def main(ctx):
     else:
       config['path'] = 'v%s' % config['version']
 
-    if config['version'] == '7.4':
-      config['plugins-docker'] = 'plugins/docker:20.12'
-    else:
-      config['plugins-docker'] = 'plugins/docker'
-
     m = manifest(config)
     inner = []
 
@@ -199,7 +194,7 @@ def notification(config):
 def prepublish(config):
   return [{
     'name': 'prepublish',
-    'image': config['plugins-docker'],
+    'image': 'plugins/docker',
     'settings': {
       'username': {
         'from_secret': 'internal_username',
