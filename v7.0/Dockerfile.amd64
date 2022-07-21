@@ -11,6 +11,14 @@ ENV ORACLE_HOME=/usr/lib/oracle/12.2/client64
 ENV LD_LIBRARY_PATH=/usr/lib/oracle/12.2/client64/lib/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 ENV APACHE_LOGGING_PATH=/dev/stdout
 
+ARG RETRY_VERSION
+
+# renovate: datasource=github-releases depName=owncloud-ci/retry
+ENV RETRY_VERSION="${RETRY_VERSION:-v2.0.0}"
+
+RUN curl -SsfL -o /usr/local/bin/retry "https://github.com/owncloud-ci/retry/releases/download/v${RETRY_VERSION##v}/retry" && \
+  chmod 755 /usr/local/bin/retry
+
 RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
   echo "deb https://deb.nodesource.com/node_8.x bionic main" | tee /etc/apt/sources.list.d/node.list && \
   curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
