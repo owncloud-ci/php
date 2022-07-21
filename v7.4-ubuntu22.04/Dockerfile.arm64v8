@@ -8,6 +8,14 @@ LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
 VOLUME ["/var/www/owncloud"]
 ENV APACHE_LOGGING_PATH=/dev/stdout
 
+ARG RETRY_VERSION
+
+# renovate: datasource=github-releases depName=owncloud-ci/retry
+ENV RETRY_VERSION="${RETRY_VERSION:-v2.0.0}"
+
+RUN curl -SsfL -o /usr/local/bin/retry "https://github.com/owncloud-ci/retry/releases/download/v${RETRY_VERSION##v}/retry" && \
+  chmod 755 /usr/local/bin/retry
+
 RUN apt-get update -y && \
   apt-get install -y software-properties-common language-pack-en-base && \
   LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && \
