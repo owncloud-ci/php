@@ -52,6 +52,9 @@ def main(ctx):
         config['platform'] = 'arm64'
 
       config['internal'] = '%s-%s' % (ctx.build.commit, config['tag'])
+      config['expected_modules'] = 'curl|mbstring|gd'
+      if config['platform'] == 'amd64':
+        config['expected_modules'] = config['expected_modules'] + '|oci8'
 
       d = docker(config)
       m['depends_on'].append(d['name'])
@@ -227,6 +230,16 @@ def sleep(config):
     ],
   }]
 
+def assert(config):
+  return [{
+    'name': 'assert',
+    'image': 'registry.drone.owncloud.com/owncloudci/%s:%s' % (config['repo'], config['internal']),
+    'detach': True,
+    'commands': [
+      'php -m | grep -E "%s"' % config['expected_modules']
+    ],
+  }]
+
 def server(config):
   return [{
     'name': 'server',
@@ -306,4 +319,4 @@ def cleanup(config):
   }]
 
 def steps(config):
-  return prepublish(config) + sleep(config) + server(config) + wait(config) + tests(config) + publish(config)
+  return prepublish(config) + sleep(config) + assert(config) + server(config) + wait(config) + tests(config) + publish(config)
