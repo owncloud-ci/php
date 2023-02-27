@@ -220,7 +220,7 @@ def sleep(config):
         },
         "commands": [
             "regctl registry login registry.drone.owncloud.com --user $DOCKER_USER --pass $DOCKER_PASSWORD",
-            "retry -- 'regctl image digest registry.drone.owncloud.com/owncloud/%s:%s'" % (config["repo"], config["internal"]),
+            "retry -- 'regctl image digest registry.drone.owncloud.com/owncloudci/%s:%s'" % (config["repo"], config["internal"]),
         ],
     }]
 
@@ -303,7 +303,7 @@ def cleanup(config):
         },
         "commands": [
             "regctl registry login registry.drone.owncloud.com --user $DOCKER_USER --pass $DOCKER_PASSWORD",
-            "regctl tag rm registry.drone.owncloud.com/owncloud/%s:%s" % (config["repo"], config["internal"]),
+            "regctl tag rm registry.drone.owncloud.com/owncloudci/%s:%s" % (config["repo"], config["internal"]),
         ],
         "when": {
             "status": [
