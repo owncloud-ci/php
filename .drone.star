@@ -313,7 +313,7 @@ def cleanup(config):
         },
     }]
 
-def lint(shell):
+def lint():
     lint = {
         "kind": "pipeline",
         "type": "docker",
@@ -348,8 +348,6 @@ def lint(shell):
             ],
         },
     }
-
-    lint["steps"].extend(shell)
 
     return lint
 
