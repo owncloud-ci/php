@@ -65,7 +65,7 @@ def main(ctx):
         for a in after:
             a["depends_on"].append(s["name"])
 
-    return [lint(shell)] + stages + after
+    return [lint()] + stages + after
 
 def docker(config):
     return {
