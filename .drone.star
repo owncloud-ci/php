@@ -9,6 +9,7 @@ def main(ctx):
         "7.4-ubuntu22.04",
         "8.0",
         "8.1",
+        "8.2",
     ]
 
     arches = [
