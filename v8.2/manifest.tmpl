@@ -1,0 +1,11 @@
+image: owncloudci/php:8.2
+manifests:
+  - image: owncloudci/php:8.2-amd64
+    platform:
+      architecture: amd64
+      os: linux
+  - image: owncloudci/php:8.2-arm64v8
+    platform:
+      architecture: arm64
+      variant: v8
+      os: linux
