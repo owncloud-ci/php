@@ -10,13 +10,10 @@ ownCloud PHP image for CI pipelines.
 
 ## Versions
 
-- [7.0](./v7.0) available as `owncloudci/php:7.0`
-- [7.1](./v7.1) available as `owncloudci/php:7.1`
-- [7.2](./v7.2) available as `owncloudci/php:7.2`
-- [7.3](./v7.3) available as `owncloudci/php:7.3`
-- [7.4](./v7.4) available as `owncloudci/php:7.4`
-- [8.0](./v8.0) available as `owncloudci/php:8.0`
-- [8.1](./v8.1) available as `owncloudci/php:8.1`
+- [7.4](https://github.com/owncloud-ci/php/blob/master/v7.4) available as `owncloudci/php:7.4`
+- [8.0](https://github.com/owncloud-ci/php/blob/master/v8.0) available as `owncloudci/php:8.0`
+- [8.1](https://github.com/owncloud-ci/php/blob/master/v8.1) available as `owncloudci/php:8.1`
+- [8.1](https://github.com/owncloud-ci/php/blob/master/v8.2) available as `owncloudci/php:8.2`
 
 ## Volumes
 
@@ -29,5 +26,5 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 ## Copyright
 
 ```Text
-Copyright (c) 2022 ownCloud GmbH
+Copyright (c) 2023 ownCloud GmbH
 ```
