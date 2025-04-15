@@ -1,0 +1,11 @@
+image: owncloudci/php:7.4-ubuntu24.04
+manifests:
+  - image: owncloudci/php:7.4-ubuntu24.04-amd64
+    platform:
+      architecture: amd64
+      os: linux
+  - image: owncloudci/php:7.4-ubuntu24.04-arm64v8
+    platform:
+      architecture: arm64
+      variant: v8
+      os: linux
