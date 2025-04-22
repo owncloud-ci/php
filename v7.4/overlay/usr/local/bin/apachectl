@@ -42,11 +42,11 @@ if [[ ! -f ${APACHE_SSL_KEY} || ! -f ${APACHE_SSL_CERT} ]]
 then
     echo "Generating certificates for ${APACHE_SSL_CERT_CN}..."
     SSL_SUBJ="/C=DE/ST=Bavaria/L=Nuremberg/O=ownCloud GmbH/CN=${APACHE_SSL_CERT_CN}"
-    openssl req -x509 -subj "${SSL_SUBJ}" -sha256 -nodes -days 1825 -newkey rsa:4096 -keyout ${APACHE_SSL_KEY} -out ${APACHE_SSL_CERT}
+    openssl req -x509 -subj "${SSL_SUBJ}" -sha256 -nodes -days 1825 -newkey rsa:4096 -keyout "${APACHE_SSL_KEY}" -out "${APACHE_SSL_CERT}"
 fi
 
 echo "Writing apache config..."
-envsubst < ${APACHE_TEMPLATE_PATH}/${APACHE_CONFIG_TEMPLATE} > /etc/apache2/sites-enabled/000-default.conf
+envsubst < "${APACHE_TEMPLATE_PATH}"/"${APACHE_CONFIG_TEMPLATE}" > /etc/apache2/sites-enabled/000-default.conf
 
 echo "Starting apache... "
 exec /usr/sbin/apachectl "$@"
