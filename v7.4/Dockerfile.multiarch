@@ -1,9 +1,11 @@
-FROM owncloud/ubuntu:20.04-amd64
+FROM docker.io/owncloud/ubuntu:20.04@sha256:06302476d6391ff2b30fd5e7c0cf52a4ca2a67bc4b78fd1e64d89e75bd37ce89
 
-LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
-  org.label-schema.name="ownCloud CI PHP" \
-  org.label-schema.vendor="ownCloud GmbH" \
-  org.label-schema.schema-version="1.0"
+LABEL maintainer="ownCloud GmbH <devops@owncloud.com>" \
+  org.opencontainers.image.authors="ownCloud DevOps <devops@owncloud.com>" \
+  org.opencontainers.image.title="ownCloud CI PHP" \
+  org.opencontainers.image.url="https://hub.docker.com/r/owncloudci/php" \
+  org.opencontainers.image.source="https://github.com/owncloud-ci/php" \
+  org.opencontainers.image.documentation="https://github.com/owncloud-ci/php"
 
 VOLUME ["/var/www/owncloud"]
 
@@ -50,5 +52,4 @@ RUN ln -s /usr/include/oracle/12.2/client64 /usr/lib/oracle/12.2/client64/includ
 
 RUN pecl -d php_suffix=7.4 install krb5
 
-COPY ./overlay ./overlay-amd64 /
 WORKDIR /var/www/owncloud
