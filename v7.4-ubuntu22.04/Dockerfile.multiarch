@@ -61,4 +61,5 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 
 RUN pecl -d php_suffix=7.4 install krb5
 
+COPY overlay /
 WORKDIR /var/www/owncloud
