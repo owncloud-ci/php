@@ -1,9 +1,11 @@
-FROM owncloud/ubuntu:22.04-amd64
+FROM docker.io/owncloud/ubuntu:22.04
 
-LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
-  org.label-schema.name="ownCloud CI PHP" \
-  org.label-schema.vendor="ownCloud GmbH" \
-  org.label-schema.schema-version="1.0"
+LABEL maintainer="ownCloud GmbH <devops@owncloud.com>" \
+  org.opencontainers.image.authors="ownCloud DevOps <devops@owncloud.com>" \
+  org.opencontainers.image.title="ownCloud CI PHP" \
+  org.opencontainers.image.url="https://hub.docker.com/r/owncloudci/php" \
+  org.opencontainers.image.source="https://github.com/owncloud-ci/php" \
+  org.opencontainers.image.documentation="https://github.com/owncloud-ci/php"
 
 VOLUME ["/var/www/owncloud"]
 
@@ -26,7 +28,7 @@ RUN apt-get update -y && \
 
 RUN apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y apache2 libapache2-mod-php7.4 libxml2-utils git-core unzip wget fontconfig libaio1 python2 php7.4 php7.4-dev php7.4-xml php7.4-mbstring php7.4-curl php7.4-gd php7.4-zip php7.4-intl php7.4-sqlite3 php7.4-mysql php7.4-pgsql php7.4-soap php7.4-phpdbg php7.4-ldap php7.4-gmp php7.4-imap php7.4-redis php7.4-memcached php7.4-imagick php7.4-smbclient php7.4-apcu php7.4-apcu-bc php7.4-ast rsync && \
+  apt-get install -y apache2 libapache2-mod-php7.4 libkrb5-dev libxml2-utils git-core unzip wget fontconfig libaio1 python2 php7.4 php7.4-dev php7.4-xml php7.4-mbstring php7.4-curl php7.4-gd php7.4-zip php7.4-intl php7.4-sqlite3 php7.4-mysql php7.4-pgsql php7.4-soap php7.4-phpdbg php7.4-ldap php7.4-gmp php7.4-imap php7.4-redis php7.4-memcached php7.4-imagick php7.4-smbclient php7.4-apcu php7.4-apcu-bc php7.4-ast rsync && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/apache2/sites-available/default-ssl.conf && \
   a2enmod rewrite headers env dir mime ssl expires dav dav_fs
@@ -48,5 +50,6 @@ RUN curl -sSo oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb https://mini
 RUN ln -s /usr/include/oracle/12.2/client64 /usr/lib/oracle/12.2/client64/include && \
   echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-2.2.0
 
-COPY ./overlay ./overlay-amd64 /
+RUN pecl -d php_suffix=7.4 install krb5
+
 WORKDIR /var/www/owncloud
