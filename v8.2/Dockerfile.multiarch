@@ -1,9 +1,11 @@
-FROM owncloud/ubuntu:20.04-amd64
+FROM docker.io/owncloud/ubuntu:20.04
 
-LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
-  org.label-schema.name="ownCloud CI PHP" \
-  org.label-schema.vendor="ownCloud GmbH" \
-  org.label-schema.schema-version="1.0"
+LABEL maintainer="ownCloud GmbH <devops@owncloud.com>" \
+  org.opencontainers.image.authors="ownCloud DevOps <devops@owncloud.com>" \
+  org.opencontainers.image.title="ownCloud CI PHP" \
+  org.opencontainers.image.url="https://hub.docker.com/r/owncloudci/php" \
+  org.opencontainers.image.source="https://github.com/owncloud-ci/php" \
+  org.opencontainers.image.documentation="https://github.com/owncloud-ci/php"
 
 VOLUME ["/var/www/owncloud"]
 
@@ -50,5 +52,4 @@ RUN curl -sSo oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb https://mini
 RUN ln -s /usr/include/oracle/12.2/client64 /usr/lib/oracle/12.2/client64/include && \
   echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-3.2.1
 
-COPY ./overlay ./overlay-amd64 /
 WORKDIR /var/www/owncloud
