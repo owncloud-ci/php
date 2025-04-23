@@ -14,6 +14,7 @@ ENV LD_LIBRARY_PATH=/usr/lib/oracle/12.2/client64/lib/${LD_LIBRARY_PATH:+:$LD_LI
 ENV APACHE_LOGGING_PATH=/dev/stdout
 
 ARG RETRY_VERSION
+ARG TARGETPLATFORM
 
 # renovate: datasource=github-releases depName=owncloud-ci/retry
 ENV RETRY_VERSION="${RETRY_VERSION:-v2.0.0}"
@@ -35,20 +36,28 @@ RUN apt-get update -y && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-RUN curl -sSo oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb && \
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+  curl -sSo oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb && \
   dpkg -i oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb && \
-  rm oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb
+  rm oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb; \
+  fi
 
-RUN curl -sSo oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb && \
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+  curl -sSo oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb && \
   dpkg -i oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb && \
-  rm oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb
+  rm oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb; \
+  fi
 
-RUN curl -sSo oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb && \
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+  curl -sSo oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb && \
   dpkg -i oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb && \
-  rm oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb
+  rm oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb; \
+  fi
 
-RUN ln -s /usr/include/oracle/12.2/client64 /usr/lib/oracle/12.2/client64/include && \
-  echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-2.2.0
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+  ln -s /usr/include/oracle/12.2/client64 /usr/lib/oracle/12.2/client64/include && \
+  echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-2.2.0; \
+  fi
 
 RUN pecl -d php_suffix=7.4 install krb5
 
