@@ -61,4 +61,5 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
   echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-3.0.1; \
   fi
 
+COPY overlay /
 WORKDIR /var/www/owncloud
