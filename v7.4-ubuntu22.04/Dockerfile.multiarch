@@ -15,6 +15,9 @@ ENV APACHE_LOGGING_PATH=/dev/stdout
 
 ARG RETRY_VERSION
 ARG TARGETPLATFORM
+ARG DEB_MIRROR_URL
+ARG DEB_MIRROR_LOGIN
+ARG DEB_MIRROR_PWD
 
 # renovate: datasource=github-releases depName=owncloud-ci/retry
 ENV RETRY_VERSION="${RETRY_VERSION:-v2.0.0}"
@@ -22,9 +25,14 @@ ENV RETRY_VERSION="${RETRY_VERSION:-v2.0.0}"
 RUN curl -SsfL -o /usr/local/bin/retry "https://github.com/owncloud-ci/retry/releases/download/v${RETRY_VERSION##v}/retry" && \
   chmod 755 /usr/local/bin/retry
 
+# Get the key that the Freexian deb mirror uses for signing
+RUN wget http://php.freexian.com/public/archive-key.gpg -O /etc/apt/trusted.gpg.d/freexian-archive-php.gpg
+# Get the authentication details for the deb mirror that has been set up to serve the Freexian PHP packages
+RUN echo "machine $DEB_MIRROR_URL login $DEB_MIRROR_LOGIN password $DEB_MIRROR_PWD" > /etc/apt/auth.conf.d/freexian.conf
+
 RUN apt-get update -y && \
   apt-get install -y software-properties-common language-pack-en-base && \
-  LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && \
+  apt-add-repository "https://$DEB_MIRROR_URL/php.freexian.com/ bookworm main" && \
   LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/apache2
 
 RUN apt-get update -y && \
@@ -60,6 +68,9 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
   fi
 
 RUN pecl -d php_suffix=7.4 install krb5
+
+# delete the file that has the authentication for the Freexian deb package server, so that it can't end up in the built docker image
+RUN rm -f /etc/apt/auth.conf.d/freexian.conf
 
 COPY overlay /
 WORKDIR /var/www/owncloud
