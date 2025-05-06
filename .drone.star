@@ -12,6 +12,9 @@ def main(ctx):
             "value": "7.4-ubuntu22.04",
         },
         {
+            "value": "7.4-ubuntu24.04",
+        },
+        {
             "value": "8.0",
         },
         {
