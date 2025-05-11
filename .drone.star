@@ -6,9 +6,6 @@ def main(ctx):
             "value": "7.4",
         },
         {
-            "value": "7.4-ubuntu20.04",
-        },
-        {
             "value": "7.4-ubuntu22.04",
         },
         {
