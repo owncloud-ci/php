@@ -1,0 +1,65 @@
+FROM docker.io/owncloud/ubuntu:22.04@sha256:46a939e9756ce2990076b305d3a3717e13b0a8d8c5edd116c420aef6793af30f
+
+LABEL maintainer="ownCloud GmbH <devops@owncloud.com>" \
+  org.opencontainers.image.authors="ownCloud DevOps <devops@owncloud.com>" \
+  org.opencontainers.image.title="ownCloud CI PHP" \
+  org.opencontainers.image.url="https://hub.docker.com/r/owncloudci/php" \
+  org.opencontainers.image.source="https://github.com/owncloud-ci/php" \
+  org.opencontainers.image.documentation="https://github.com/owncloud-ci/php"
+
+VOLUME ["/var/www/owncloud"]
+
+ENV ORACLE_HOME=/usr/lib/oracle/12.2/client64
+ENV LD_LIBRARY_PATH=/usr/lib/oracle/12.2/client64/lib/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+ENV APACHE_LOGGING_PATH=/dev/stdout
+
+ARG RETRY_VERSION
+ARG TARGETPLATFORM
+
+# renovate: datasource=github-releases depName=owncloud-ci/retry
+ENV RETRY_VERSION="${RETRY_VERSION:-v2.0.0}"
+
+RUN curl -SsfL -o /usr/local/bin/retry "https://github.com/owncloud-ci/retry/releases/download/v${RETRY_VERSION##v}/retry" && \
+  chmod 755 /usr/local/bin/retry
+
+RUN apt-get update -y && \
+  apt-get install -y software-properties-common language-pack-en-base && \
+  LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && \
+  LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/apache2
+
+RUN apt-get update -y && \
+  apt-get upgrade -y && \
+  apt-get install -y apache2 libapache2-mod-php8.4 libxml2-utils git-core unzip wget fontconfig libaio1 python2 php8.4 php8.4-dev php8.4-xml php8.4-mbstring php8.4-curl php8.4-gd php8.4-zip php8.4-intl php8.4-sqlite3 php8.4-mysql php8.4-pgsql php8.4-soap php8.4-phpdbg php8.4-ldap php8.4-gmp php8.4-imap php8.4-redis php8.4-memcached php8.4-imagick php8.4-smbclient php8.4-apcu php8.4-ast rsync && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/apache2/sites-available/default-ssl.conf && \
+  a2enmod rewrite headers env dir mime ssl expires dav dav_fs
+
+RUN update-alternatives --set php /usr/bin/php8.4
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+  curl -sSo oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb && \
+  dpkg -i oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb && \
+  rm oracle-instantclient12.2-basic_12.2.0.1.0-2_amd64.deb; \
+  fi
+
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+  curl -sSo oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb && \
+  dpkg -i oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb && \
+  rm oracle-instantclient12.2-sqlplus_12.2.0.1.0-2_amd64.deb; \
+  fi
+
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+  curl -sSo oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb https://minio.owncloud.com/packages/oracle/oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb && \
+  dpkg -i oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb && \
+  rm oracle-instantclient12.2-devel_12.2.0.1.0-2_amd64.deb; \
+  fi
+
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+  ln -s /usr/include/oracle/12.2/client64 /usr/lib/oracle/12.2/client64/include && \
+  echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-3.4.0; \
+  fi
+
+COPY overlay /
+WORKDIR /var/www/owncloud

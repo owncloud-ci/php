@@ -14,6 +14,8 @@ ownCloud PHP image for CI pipelines.
 - [8.0](https://github.com/owncloud-ci/php/blob/master/v8.0) available as `owncloudci/php:8.0`
 - [8.1](https://github.com/owncloud-ci/php/blob/master/v8.1) available as `owncloudci/php:8.1`
 - [8.2](https://github.com/owncloud-ci/php/blob/master/v8.2) available as `owncloudci/php:8.2`
+- [8.3](https://github.com/owncloud-ci/php/blob/master/v8.3) available as `owncloudci/php:8.3`
+- [8.4](https://github.com/owncloud-ci/php/blob/master/v8.4) available as `owncloudci/php:8.4`
 
 ## Volumes
 

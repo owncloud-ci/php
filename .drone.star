@@ -17,6 +17,9 @@ def main(ctx):
         {
             "value": "8.3",
         },
+        {
+            "value": "8.4",
+        },
     ]
 
     config = {
