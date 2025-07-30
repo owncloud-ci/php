@@ -34,6 +34,13 @@ RUN apt-get update -y && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/apache2/sites-available/default-ssl.conf && \
   a2enmod rewrite headers env dir mime ssl expires dav dav_fs
 
+RUN apt-get update -y && apt-get upgrade -y && apt-get remove -y curl && apt-get purge -y curl && \
+  apt-get install -y libldap-dev libpsl-dev libssh-dev && \
+  cd /usr/local/src && rm -rf curl* && \
+  wget https://curl.se/download/curl-8.12.0.zip && unzip curl-8.12.0.zip && cd curl-8.*/ && \
+  ./configure --with-ssl --with-zlib --with-gssapi --enable-ldap --enable-ldaps --with-libssh --with-nghttp2 && \
+  make && make install && ldconfig && cd / && rm -rf /usr/local/src/curl*
+
 RUN update-alternatives --set php /usr/bin/php8.4
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
