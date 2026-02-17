@@ -20,6 +20,9 @@ def main(ctx):
         {
             "value": "8.4",
         },
+        {
+            "value": "8.5",
+        },
     ]
 
     config = {
@@ -192,7 +195,7 @@ def trivy(config):
                 "TRIVY_TIMEOUT": "5m",
                 "TRIVY_EXIT_CODE": "1",
                 "TRIVY_SEVERITY": "HIGH,CRITICAL",
-                "TRIVY_SKIP_FILES": "/usr/bin/gomplate",
+                "TRIVY_SKIP_FILES": "/usr/bin/gomplate,/usr/bin/wait-for",
             },
             "commands": [
                 "trivy -v",
