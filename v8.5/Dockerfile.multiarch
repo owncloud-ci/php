@@ -65,7 +65,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
   ln -s /usr/include/oracle/12.2/client64 /usr/lib/oracle/12.2/client64/include && \
-  echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-3.4.0; \
+  echo "instantclient,/usr/lib/oracle/12.2/client64/lib" | pecl install oci8-3.4.1; \
   fi
 
 COPY overlay /
