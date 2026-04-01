@@ -1,0 +1,43 @@
+name: Docker CI
+
+on:
+  push:
+    branches: [master]
+    tags: ["*"]
+  pull_request:
+
+jobs:
+  lint:
+    uses: owncloud-docker/ubuntu/.github/workflows/lint-editorconfig.yml@master  
+    
+  build:
+    needs: lint
+    uses: owncloud-docker/ubuntu/.github/workflows/docker-build.yml@master
+    with:
+      docker-repo-name: owncloudci/${{ github.event.repository.name }}
+      docker-tag: ${{ matrix.version }}
+      docker-context: v${{ matrix.version }}
+      docker-file: v${{ matrix.version }}/Dockerfile.multiarch
+      docker-hub-username: ${{ vars.DOCKERHUB_USERNAME }}
+      push: ${{ github.ref == 'refs/heads/master' }}
+    secrets:
+      docker-hub-password: ${{ secrets.DOCKERHUB_TOKEN }}
+      docker-secrets: |
+        mirror-url=${{ secrets.DEB_MIRROR_URL }}
+        mirror-auth=machine ${{secrets.DEB_MIRROR_URL}} login ${{secrets.DEB_MIRROR_LOGIN}} password ${{secrets.DEB_MIRROR_PWD}}
+
+    strategy:
+      matrix:
+        #version: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
+        version: ["8.3", "8.4", "8.5"]
+
+  update-docker-hub-description:
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    uses: owncloud-docker/ubuntu/.github/workflows/docker-hub-desc.yml@master
+    with:
+      docker-repo-name: owncloudci/${{ github.event.repository.name }}
+      docker-repo-description: ownCloud PHP base image for use in CI
+      docker-hub-username: ${{ vars.DOCKERHUB_USERNAME }}
+    secrets:
+      docker-hub-password: ${{ secrets.DOCKERHUB_TOKEN }}

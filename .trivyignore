@@ -1,0 +1,2 @@
+# Ignore snakeoil SSL key
+/etc/ssl/private/ssl-cert-snakeoil.key
