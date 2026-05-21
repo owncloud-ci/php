@@ -21,6 +21,8 @@ jobs:
       docker-hub-username: ${{ vars.DOCKERHUB_USERNAME }}
       push: ${{ github.ref == 'refs/heads/master' }}
       trivy-ignore-files: .trivyignore.yaml
+      docker-cache-from: type=gha,scope=${{ matrix.version }}
+      docker-cache-to: type=gha,scope=${{ matrix.version }},mode=max
     secrets:
       docker-hub-password: ${{ secrets.DOCKERHUB_TOKEN }}
       docker-secrets: |
