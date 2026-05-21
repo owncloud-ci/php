@@ -1,0 +1,4 @@
+secrets:
+  - id: private-key
+    paths:
+      - /etc/ssl/private/ssl-cert-snakeoil.key

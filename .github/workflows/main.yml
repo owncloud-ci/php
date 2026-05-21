@@ -20,6 +20,7 @@ jobs:
       docker-file: v${{ matrix.version }}/Dockerfile.multiarch
       docker-hub-username: ${{ vars.DOCKERHUB_USERNAME }}
       push: ${{ github.ref == 'refs/heads/master' }}
+      trivy-ignore-files: .trivyignore.yaml
     secrets:
       docker-hub-password: ${{ secrets.DOCKERHUB_TOKEN }}
       docker-secrets: |
